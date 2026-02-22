@@ -11,7 +11,7 @@ df["Date"] = date
 
 open = df["Open"]
 mean = open.mean()
-print(mean)
+mean = round(mean, 2)
 df["Open"].fillna(mean, inplace=True)
 for i in range(len(open)):
     if type(open[i]) == str:
@@ -24,7 +24,8 @@ df["Open"] = open_scaler
 
 high = df["High"]
 mean = high.mean()
-# df.fillna(mean, inplace=True)
+mean = round(mean, 2)
+df["High"].fillna(mean, inplace=True)
 for i in range(len(high)):
     if type(high[i]) == str:
         high[i] = mean
@@ -37,6 +38,8 @@ df["High"] = high_scaler
 
 low = df["Low"]
 mean = low.mean()
+mean = round(mean, 2)
+df["Low"].fillna(mean, inplace=True)
 for i in range(len(low)):
     if type(low[i]) == str:
         low[i] = mean
@@ -48,6 +51,8 @@ df["Low"] = low_scaler
 
 close = df["Close"]
 mean = close.mean()
+mean = round(mean, 2)
+df["Close"].fillna(mean, inplace=True)
 for i in range(len(close)):
     if type(close[i]) == str:
         close[i] = mean
@@ -58,17 +63,26 @@ df["Close"] = close_scaler
 
 adj_close = df["Adj Close"]
 mean = adj_close.mean()
+mean = round(mean, 2)
+df["Adj Close"].fillna(mean, inplace=True)
 for i in range(len(adj_close)):
     if type(adj_close[i]) == str:
         adj_close[i] = mean
-        
-scaler = StandardScaler()
+
 adj_close_scaler = scaler.fit_transform(pd.DataFrame(df["Adj Close"]))
 df["Adj Close"] = adj_close_scaler
+# standard_cols = ["Open", "High", "Low", "Close", "Adj Close"]
+
+# for col in standard_cols:
+#     df[col] = pd.to_numeric(df[col], errors="coerce")
+#     df[col].fillna(df[col].mean(), inplace=True)
+# scaler = StandardScaler()
+# adj_close_scaler = scaler.fit_transform(pd.DataFrame(df["Adj Close"]))
+# df["Adj Close"] = adj_close_scaler
 
 volume = df["Volume"]
 mean = volume.mean()
-print(mean)
+mean = round(mean, 2)
 for i in range(len(volume)):
     if type(volume[i]) == str:
         volume[i] = mean
