@@ -2,11 +2,14 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 
+
+
 df = pd.read_csv("archive/indexData.csv")
 df.drop(columns=["Index"], inplace=True)
 
 date = pd.to_datetime(df["Date"])
-
+date = list(date)
+date = [i for i in range(len(date))]
 df["Date"] = date
 
 open = df["Open"]
