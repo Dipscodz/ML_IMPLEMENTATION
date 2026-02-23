@@ -2,8 +2,6 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 
-
-
 df = pd.read_csv("archive/indexData.csv")
 df.drop(columns=["Index"], inplace=True)
 
@@ -85,13 +83,14 @@ df["Adj Close"] = adj_close_scaler
 
 volume = df["Volume"]
 mean = volume.mean()
-mean = round(mean, 2)
+df.fillna(df.mean(numeric_only=True), inplace=True)
+mean = round(mean ,2)
 for i in range(len(volume)):
     if type(volume[i]) == str:
         volume[i] = mean
-scaler = MinMaxScaler(feature_range=(0, 10000))
+scaler = MinMaxScaler(feature_range=(0,10000))
 volume_scaler = scaler.fit_transform(pd.DataFrame(df["Volume"]))
-df["Volume"] = volume_scaler
+df["Volume"]=volume_scaler
 
-
+print(df.isna().sum())
 df.to_csv("preprocessed_data.csv", index=True)
