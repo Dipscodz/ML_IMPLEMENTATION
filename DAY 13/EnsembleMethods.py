@@ -73,3 +73,22 @@ Votingmodel = VotingClassifier(
 Votingmodel.fit(X_train, y_train)
 votingPred = Votingmodel.predict(X_test)
 print("Voting Accuracy:", accuracy_score(y_test, votingPred))
+
+blendingModel = StackingClassifier(
+    estimators=estimators,
+    final_estimator=final,
+    passthrough=True # If True, the original features are concatenated with the predictions of
+    # the base estimators and passed to the final estimator. If False, only the predictions of the base estimators are passed to the final estimator.
+)
+blendingModel.fit(X_train, y_train)
+blendingPred = blendingModel.predict(X_test)
+print("Blending Accuracy:", accuracy_score(y_test, blendingPred))
+
+metaModel = StackingClassifier(
+    estimators=estimators,
+    final_estimator=final,
+    passthrough=False
+)
+metaModel.fit(X_train, y_train)
+metaPred = metaModel.predict(X_test)
+print("Meta Learning Accuracy:", accuracy_score(y_test, metaPred))
