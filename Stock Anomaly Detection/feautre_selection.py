@@ -1,12 +1,15 @@
 import pandas as pd
 from sklearn.decomposition import PCA
 from matplotlib import pyplot as plt
+from sklearn.preprocessing import StandardScaler
 
 df = pd.read_csv("preprocessed_data.csv")
 X=df
 
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
 pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X)
+X_pca = pca.fit_transform(X_scaled)
 
 pca_df = pd.DataFrame(data=X_pca, columns=['PCA1', 'PCA2'])
 

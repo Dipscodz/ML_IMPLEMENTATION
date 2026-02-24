@@ -1,32 +1,26 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.cluster import KMeans
+import sklearn.mixture as GMM
 
 df = pd.read_csv("pca_data.csv")
 
 X = df[["PCA1", "PCA2"]]
 
-kmeans = KMeans(n_clusters=2, random_state=42)
-kmeans.fit(X)
+gmm = GMM.GaussianMixture(n_components=2, covariance_type="full", random_state=42)
+df["Cluster"] = gmm.fit_predict(X)
 
-df["Cluster"] = kmeans.predict(X)
-
-log_likelihood = kmeans.score_samples(X)
+log_likelihood = gmm.score_samples(X)
 threshold = np.percentile(log_likelihood, 5)
 df["Anomaly"] = (log_likelihood < threshold).astype(int)
 
 print(df["Cluster"].value_counts())
 print(df["Anomaly"].value_counts())
 
-plt.figure(figsize=(8,6))
-plt.scatter(df["PCA1"], df["PCA2"], c=df["Cluster"], cmap="viridis", alpha=0.6)
-
-plt.scatter(df[df["Anomaly"] == 1]["PCA1"],
-df[df["Anomaly"] == 1]["PCA2"],
-color="red", edgecolors="black")
-
+plt.scatter(df["PCA1"], df["PCA2"], c=df["Cluster"], cmap="viridis", label="Clusters")
+plt.scatter(df[df["Anomaly"] == 1]["PCA1"], df[df["Anomaly"] == 1]["PCA2"], c="red", label="Anomalies", edgecolor="k")
 plt.xlabel("PCA1")
 plt.ylabel("PCA2")
-plt.title("GMM Clustering + Anomaly Detection")
+plt.title("GMM Clustering and Anomaly Detection")
+plt.legend()
 plt.show()
