@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
-
+    
 
 df = pd.read_csv("pca_data.csv")
 X = df[["PCA1", "PCA2"]]
